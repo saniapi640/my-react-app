@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 //const KEY = 'g74xJI2ZSIfLWgBcMSa144sl2Ln3HMAH';
-const URL = 'https://saniservice.genesyserp.com/api';
+const URL = process.env.REACT_APP_ERP_API_URL;
 
 export default axios.create({
     baseURL: URL,

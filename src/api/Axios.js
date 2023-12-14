@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 //const KEY = 'g74xJI2ZSIfLWgBcMSa144sl2Ln3HMAH';
-const URL = 'https://656eaddb6529ec1c62367815.mockapi.io';
+const URL = process.env.REACT_APP_PYTHON_API_URL;
 
 export default axios.create({
     baseURL: URL,
