@@ -19,9 +19,10 @@ function Home() {
         { label: "Priority", accessor: "priority", sortable: true },
         { label: "Duration", accessor: "service_duration", sortable: true },
         { label: "Behaviour", accessor: "behaviour", sortable: true },
+        { label: "Price", accessor: "price", sortable: true },
         { label: "Action", accessor: "action", sortable: false },
-       ];
-      
+    ];
+
 
     const [properties, setProperties] = useState(null);
     const [filteredProperties, setFilteredProperties] = useState(null);
@@ -61,47 +62,47 @@ function Home() {
 
     useEffect(() => {
         let newproperties = properties;
-       if(newproperties){
-        setFilteredProperties(newproperties);
-        if (selectedAreas.length !== 0) {
-            newproperties = newproperties.filter((item) => (selectedAreas.includes(item.area)));
-           }
-        
+        if (newproperties) {
+            setFilteredProperties(newproperties);
+            if (selectedAreas.length !== 0) {
+                newproperties = newproperties.filter((item) => (selectedAreas.includes(item.area)));
+            }
 
-        if (selectedPriorities.length !== 0) {
-            newproperties = newproperties.filter((item) => (selectedPriorities.includes(item.priority)));
+
+            if (selectedPriorities.length !== 0) {
+                newproperties = newproperties.filter((item) => (selectedPriorities.includes(item.priority)));
+            }
+            if (selectedBehaviours.length !== 0) {
+                newproperties = newproperties.filter((item) => (selectedBehaviours.includes(item.behaviour)));
+            }
+            if (selectedDurations.length !== 0) {
+                newproperties = newproperties.filter((item) => (selectedDurations.includes(item.service_duration)));
+            }
+            if (selectedDates.length !== 0) {
+                console.log(selectedDates);
+                newproperties = newproperties.filter((item) => (selectedDates.includes(item.service_date)));
+            }
+            setFilteredProperties(newproperties);
         }
-        if (selectedBehaviours.length !== 0) {
-            newproperties = newproperties.filter((item) => (selectedBehaviours.includes(item.behaviour)));
-        }
-        if (selectedDurations.length !== 0) {
-            newproperties = newproperties.filter((item) => (selectedDurations.includes(item.service_duration)));
-        }
-        if (selectedDates.length !== 0) {
-            console.log(selectedDates);
-            newproperties = newproperties.filter((item) => (selectedDates.includes(item.service_date)));
-        }
-        setFilteredProperties(newproperties);
-    }
 
     }, [selectedAreas, selectedPriorities, selectedBehaviours, selectedDurations, selectedDates, properties])
 
 
     const handleSorting = (sortField, sortOrder) => {
         if (sortField) {
-          const sorted = [...filteredProperties].sort((a, b) => {
-            if (a[sortField] === null) return 1;
-            if (b[sortField] === null) return -1;
-            if (a[sortField] === null && b[sortField] === null) return 0;
-            return (
-              a[sortField].toString().localeCompare(b[sortField].toString(), "en", {
-                numeric: true,
-              }) * (sortOrder === "asc" ? 1 : -1)
-            );
-          });
-          setFilteredProperties(sorted);
+            const sorted = [...filteredProperties].sort((a, b) => {
+                if (a[sortField] === null) return 1;
+                if (b[sortField] === null) return -1;
+                if (a[sortField] === null && b[sortField] === null) return 0;
+                return (
+                    a[sortField].toString().localeCompare(b[sortField].toString(), "en", {
+                        numeric: true,
+                    }) * (sortOrder === "asc" ? 1 : -1)
+                );
+            });
+            setFilteredProperties(sorted);
         }
-      };
+    };
 
 
 
@@ -138,8 +139,11 @@ function Home() {
                         <div>
                             <form>
 
-                            <MultiCheckBoxFilter items={
+                                <MultiCheckBoxFilter items={
                                     properties
+                                        .sort((a, b) =>
+                                            a.service_date > b.service_date ? 1 : -1,
+                                        )
                                         .map((item) => item.service_date)
                                         .filter((value, index, self) => self.indexOf(value) === index)
                                 }
@@ -153,6 +157,9 @@ function Home() {
 
                                 <MultiCheckBoxFilter items={
                                     properties
+                                    .sort((a, b) =>
+                                    a.area > b.area ? 1 : -1,
+                                )
                                         .map((item) => item.area)
                                         .filter((value, index, self) => self.indexOf(value) === index)
                                 }
@@ -165,6 +172,9 @@ function Home() {
 
                                 <MultiCheckBoxFilter items={
                                     properties
+                                    .sort((a, b) =>
+                                    a.priority > b.priority ? 1 : -1,
+                                )
                                         .map((item) => item.priority)
                                         .filter((value, index, self) => self.indexOf(value) === index)
                                 }
@@ -175,8 +185,11 @@ function Home() {
                                     }}
                                 ></MultiCheckBoxFilter>
 
-<MultiCheckBoxFilter items={
+                                <MultiCheckBoxFilter items={
                                     properties
+                                    .sort((a, b) =>
+                                    a.behaviour > b.behaviour ? 1 : -1,
+                                )
                                         .map((item) => item.behaviour)
                                         .filter((value, index, self) => self.indexOf(value) === index)
                                 }
@@ -188,8 +201,11 @@ function Home() {
                                 ></MultiCheckBoxFilter>
 
 
-<MultiCheckBoxFilter items={
+                                <MultiCheckBoxFilter items={
                                     properties
+                                    .sort((a, b) =>
+                                    a.service_duration > b.service_duration ? 1 : -1,
+                                )
                                         .map((item) => item.service_duration)
                                         .filter((value, index, self) => self.indexOf(value) === index)
                                 }
@@ -213,8 +229,8 @@ function Home() {
 border p-4 rounded-lg  border-gray-200 shadow-lg">
 
                         <div className="table  min-w-full">
-                        <TableHead columns={tableColumns} onSorting={handleSorting} />
-                           
+                            <TableHead columns={tableColumns} onSorting={handleSorting} />
+
 
                             {
                                 (filteredProperties) &&
