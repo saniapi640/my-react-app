@@ -4,24 +4,31 @@ function SearchBar(props) {
   const [formData, setFormData] = useState({
     query: "",
     searchtype: "area",
+    placeholder: "Search By Area",
     inputType: "text"
   });
   const onInputChange = (e) => {
     const { name, value } = e.target;
     let input_type = "text";
+    let placeholder = "Search By Area";
     setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: value,
     }));
     if (name === 'searchtype') {
-      if (value === 'area') {
+      if (value === 'area'){
+      input_type = "text";
+    }
+      else if(value === 'client') {
         input_type = "text";
+        placeholder = "Client Name/Phone/Email";
       } else {
         input_type = "date";
       }
       setFormData((prevFormData) => ({
         ...prevFormData,
         inputType: input_type,
+        placeholder: placeholder,
         query: "",
       }));
     }
@@ -35,7 +42,8 @@ function SearchBar(props) {
     e.preventDefault();
     let area = formData.searchtype === 'area' ? formData.query : null;
     let service_date = formData.searchtype === 'date' ? formData.query : null;
-    props.onSearch(area, service_date);
+    let client_details = formData.searchtype === 'client' ? formData.query : null;
+    props.onSearch(area, service_date, client_details);
   }
   const handleClearClick = (e) => {
     setFormData({
@@ -68,7 +76,7 @@ function SearchBar(props) {
             >
             <option value="area">Area</option>
             <option value="date">Service Date</option>
-            {/* <option value="client">Client Name/Phone/Email</option> */}
+             <option value="client">Client Name/Phone/Email</option> 
           </select>
 
 
@@ -80,7 +88,7 @@ function SearchBar(props) {
             value={formData.query}
             name="query"
             type={formData.inputType}
-            placeholder={'Search By Area'}
+            placeholder={formData.placeholder}
             autoComplete="off"
             className="border  h-10 border-gray-300 bg-gray-50 px-3 rounded-lg  text-base 
             focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"

@@ -27,7 +27,7 @@ function Home() {
     const [filteredProperties, setFilteredProperties] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
-    const getPropertyListingData = async (area, service_date) => {
+    const getPropertyListingData = async (area, service_date, client_details) => {
         try {
             setProperties(null);
             setFilteredProperties(null);
@@ -36,7 +36,8 @@ function Home() {
             await axios.get(BASE_URL, {
                 params: {
                     area: area,
-                    service_date: service_date
+                    service_date: service_date,
+                    client_details: client_details
                 }
             })
                 .then(response => {
