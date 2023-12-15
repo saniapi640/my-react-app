@@ -138,12 +138,11 @@ function Home() {
 
                         <div>
                             <form>
+                                {
+                                console.log(properties)}
 
                                 <MultiCheckBoxFilter items={
                                     properties
-                                        .sort((a, b) =>
-                                            a.service_date > b.service_date ? 1 : -1,
-                                        )
                                         .map((item) => item.service_date)
                                         .filter((value, index, self) => self.indexOf(value) === index)
                                 }
@@ -157,9 +156,6 @@ function Home() {
 
                                 <MultiCheckBoxFilter items={
                                     properties
-                                    .sort((a, b) =>
-                                    a.area > b.area ? 1 : -1,
-                                )
                                         .map((item) => item.area)
                                         .filter((value, index, self) => self.indexOf(value) === index)
                                 }
@@ -172,9 +168,6 @@ function Home() {
 
                                 <MultiCheckBoxFilter items={
                                     properties
-                                    .sort((a, b) =>
-                                    a.priority > b.priority ? 1 : -1,
-                                )
                                         .map((item) => item.priority)
                                         .filter((value, index, self) => self.indexOf(value) === index)
                                 }
@@ -187,9 +180,6 @@ function Home() {
 
                                 <MultiCheckBoxFilter items={
                                     properties
-                                    .sort((a, b) =>
-                                    a.behaviour > b.behaviour ? 1 : -1,
-                                )
                                         .map((item) => item.behaviour)
                                         .filter((value, index, self) => self.indexOf(value) === index)
                                 }
@@ -202,11 +192,7 @@ function Home() {
 
 
                                 <MultiCheckBoxFilter items={
-                                    properties
-                                    .sort((a, b) =>
-                                    a.service_duration > b.service_duration ? 1 : -1,
-                                )
-                                        .map((item) => item.service_duration)
+                                    properties.map((item) => item.service_duration)
                                         .filter((value, index, self) => self.indexOf(value) === index)
                                 }
                                     selected={selectedDurations}

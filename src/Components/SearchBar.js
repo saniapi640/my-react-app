@@ -7,6 +7,9 @@ function SearchBar(props) {
     placeholder: "Search By Area",
     inputType: "text"
   });
+  const [errors, setErrors] = useState({});
+ 
+
   const onInputChange = (e) => {
     const { name, value } = e.target;
     let input_type = "text";
@@ -40,10 +43,20 @@ function SearchBar(props) {
   const handleSearchClick = (e) => {
 
     e.preventDefault();
+    
+    let errors = {};
     let area = formData.searchtype === 'area' ? formData.query : null;
     let service_date = formData.searchtype === 'date' ? formData.query : null;
     let client_details = formData.searchtype === 'client' ? formData.query : null;
-    props.onSearch(area, service_date, client_details);
+
+    if (formData.query.length ===0) {
+      errors.query = "Please fill the details";
+    }else{
+      props.onSearch(area, service_date, client_details);
+    }
+    setErrors(errors);
+    
+ 
   }
   const handleClearClick = (e) => {
     setFormData({
@@ -91,7 +104,8 @@ function SearchBar(props) {
             placeholder={formData.placeholder}
             autoComplete="off"
             className="border  h-10 border-gray-300 bg-gray-50 px-3 rounded-lg  text-base 
-            focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+            focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent 
+            "  style={{ border: errors.query ? "1px solid red" : null }}
              />
          
 
