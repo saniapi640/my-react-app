@@ -5,6 +5,7 @@ import SearchBar from '../Components/SearchBar';
 import MultiCheckBoxFilter from '../Components/MultiCheckBoxFilter';
 import TableHead from '../Components/TableHead';
 import axios from '../api/Axios';
+import dayjs from "dayjs"
 const BASE_URL = '/properties';
 function Home() {
     const [selectedAreas, setSelectedAreas] = useState([]);
@@ -14,7 +15,7 @@ function Home() {
     const [selectedDates, setSelectedDates] = useState([]);
 
     const tableColumns = [
-        { label: "Date", accessor: "service_date", sortable: true, sortbyOrder: "desc" },
+        { label: "Recommended Date", accessor: "service_date", sortable: true, sortbyOrder: "desc" },
         { label: "Client", accessor: "address", sortable: true },
         { label: "Priority", accessor: "priority", sortable: true },
         { label: "Duration", accessor: "service_duration", sortable: true },
@@ -28,6 +29,23 @@ function Home() {
     const [filteredProperties, setFilteredProperties] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
+
+    const handleSwitch = (itemVal, itemType) => {
+        if (itemType === 'duration') {
+            switch (itemVal) {
+                case 1:
+                    return itemVal + ' hour';
+                case 4:
+                    return 'half day';
+                case 8:
+                    return 'full day';
+                default:
+                    return itemVal + ' hours';
+            }
+        }
+
+    }
+
     const getPropertyListingData = async (area, service_date, client_details) => {
         try {
             setProperties(null);
@@ -42,12 +60,28 @@ function Home() {
                 }
             })
                 .then(response => {
-                    setProperties(response.data);
-                    setFilteredProperties(response.data);
+
+
+                    const datas = eval(response.data);
+                    const filter_datas = datas.map((item) => {
+                        return {
+                            ...item,
+                            service_duration: handleSwitch(item.service_duration, 'duration'),
+                            service_date: dayjs(item.service_date).format("MMM DD, YYYY")
+                        };
+
+                    });;
+
+
+
+
+                    setProperties(filter_datas);
+                    setFilteredProperties(filter_datas);
                     setLoading(false);
                     setError(false);
                 })
-                .catch(() => {
+                .catch((error) => {
+                    console.log(error);
                     setProperties(null);
                     setFilteredProperties(null);
                     setLoading(false);
@@ -79,7 +113,6 @@ function Home() {
                 newproperties = newproperties.filter((item) => (selectedDurations.includes(item.service_duration)));
             }
             if (selectedDates.length !== 0) {
-                console.log(selectedDates);
                 newproperties = newproperties.filter((item) => (selectedDates.includes(item.service_date)));
             }
             setFilteredProperties(newproperties);
@@ -138,11 +171,12 @@ function Home() {
 
                         <div>
                             <form>
-                                {
-                                console.log(properties)}
 
                                 <MultiCheckBoxFilter items={
                                     properties
+                                        .sort((a, b) =>
+                                            a.service_date > b.service_date ? 1 : -1,
+                                        )
                                         .map((item) => item.service_date)
                                         .filter((value, index, self) => self.indexOf(value) === index)
                                 }
@@ -156,6 +190,9 @@ function Home() {
 
                                 <MultiCheckBoxFilter items={
                                     properties
+                                    .sort((a, b) =>
+                                    a.area > b.area ? 1 : -1,
+                                )
                                         .map((item) => item.area)
                                         .filter((value, index, self) => self.indexOf(value) === index)
                                 }
@@ -168,6 +205,9 @@ function Home() {
 
                                 <MultiCheckBoxFilter items={
                                     properties
+                                    .sort((a, b) =>
+                                    a.priority > b.priority ? 1 : -1,
+                                )
                                         .map((item) => item.priority)
                                         .filter((value, index, self) => self.indexOf(value) === index)
                                 }
@@ -180,6 +220,9 @@ function Home() {
 
                                 <MultiCheckBoxFilter items={
                                     properties
+                                    .sort((a, b) =>
+                                    a.behaviour > b.behaviour ? 1 : -1,
+                                )
                                         .map((item) => item.behaviour)
                                         .filter((value, index, self) => self.indexOf(value) === index)
                                 }
@@ -192,7 +235,11 @@ function Home() {
 
 
                                 <MultiCheckBoxFilter items={
-                                    properties.map((item) => item.service_duration)
+                                    properties
+                                    .sort((a, b) =>
+                                    a.service_duration > b.service_duration ? 1 : -1,
+                                )
+                                .map((item) => item.service_duration)
                                         .filter((value, index, self) => self.indexOf(value) === index)
                                 }
                                     selected={selectedDurations}
@@ -222,7 +269,7 @@ border p-4 rounded-lg  border-gray-200 shadow-lg">
                                 (filteredProperties) &&
                                 filteredProperties.map((property, key) =>
                                     <PropertyCard
-                                        property={property} key={property.id} />
+                                        property={property} key={key} />
                                 )
                             }
 

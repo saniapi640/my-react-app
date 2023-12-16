@@ -63,7 +63,7 @@ function MultiCheckBoxFilter(props) {
 
 
                       className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
-                    <label className="ml-3 text-sm text-gray-600" htmlFor={option}>
+                    <label className="ml-3 text-sm text-gray-600 capitalize" htmlFor={option}>
                       {option}
                     </label>
                   </div>
