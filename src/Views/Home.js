@@ -208,7 +208,21 @@ function Home() {
                                         .map((item) => item.area)
                                         .filter((value, index, self) => self.indexOf(value) === index)
                                 }
-                                allitems={properties}
+                                allitems={
+                                    properties.reduce((acc, cur) => {
+                                        const existingItem = acc.find(item => cur.property_id === item.property_id);
+                                        if(existingItem) {
+                                           existingItem.count++;
+                                        }
+                                        else {
+                                           acc.push({...cur, count: 1});    
+                                        }
+                                        return acc;
+                                     }, [])
+                                }
+
+
+
                                 slug="area"
                                 showPriority = "1"
                                     selected={selectedAreas}
