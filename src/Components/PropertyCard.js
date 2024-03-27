@@ -12,7 +12,7 @@ function PropertyCard(props) {
                 {dayjs(props.property.service_date).format("DD")}
                 </div>
                          
-                         <div class="text-sm  font-thin">{dayjs(props.property.service_date).format("MMM")}</div>
+                         <div className="text-sm  font-thin">{dayjs(props.property.service_date).format("MMM")}</div>
                          <div className="text-sm font-bold"> 
                          {dayjs(props.property.service_date).format("YYYY")}
                          </div>

@@ -13,15 +13,17 @@ function Home() {
     const [selectedBehaviours, setSelectedBehaviours] = useState([]);
     const [selectedDurations, setSelectedDurations] = useState([]);
     const [selectedDates, setSelectedDates] = useState([]);
+    const [sortField, setSortField] = useState("");
+    const [sortOrder, setSortOrder] = useState("asc");
 
     const tableColumns = [
-        { label: "Recommended Date", accessor: "service_date", sortable: true, sortbyOrder: "desc" },
-        { label: "Client", accessor: "address", sortable: true },
-        { label: "Priority", accessor: "priority", sortable: true },
-        { label: "Duration", accessor: "service_duration", sortable: true },
-        { label: "Behaviour", accessor: "behaviour", sortable: true },
-        { label: "Price", accessor: "price", sortable: true },
-        { label: "Action", accessor: "action", sortable: false },
+        { label: "Date", accessor: "service_date", sortable: true, sortable_accessor: "service_date" },
+        { label: "Client", accessor: "address", sortable: true , sortable_accessor: "address"},
+        { label: "Priority", accessor: "priority", sortable: true, sortable_accessor: "score" },
+        { label: "Duration", accessor: "service_duration", sortable: true , sortable_accessor: "service_duration"},
+        { label: "Behaviour", accessor: "behaviour", sortable: true , sortable_accessor: "behaviour"},
+        { label: "Price", accessor: "price", sortable: true, sortable_accessor: "price" },
+        { label: "Action", accessor: "action", sortable: false, sortable_accessor: "action" },
     ];
 
 
@@ -115,26 +117,33 @@ function Home() {
             if (selectedDates.length !== 0) {
                 newproperties = newproperties.filter((item) => (selectedDates.includes(item.service_date)));
             }
+
+            if (sortField) {
+                newproperties = [...newproperties].sort((a, b) => {
+                 if (a[sortField] === null) return 1;
+                 if (b[sortField] === null) return -1;
+                 if (a[sortField] === null && b[sortField] === null) return 0;
+                 return (
+                  a[sortField].toString().localeCompare(b[sortField].toString(), "en", {
+                   numeric: true,
+                  }) * (sortOrder === "asc" ? 1 : -1)
+                 );
+                });
+            }
+
+         
+           
+            
+
             setFilteredProperties(newproperties);
         }
 
-    }, [selectedAreas, selectedPriorities, selectedBehaviours, selectedDurations, selectedDates, properties])
+    }, [selectedAreas, selectedPriorities, selectedBehaviours, selectedDurations, selectedDates, properties, sortField, sortOrder])
 
 
     const handleSorting = (sortField, sortOrder) => {
-        if (sortField) {
-            const sorted = [...filteredProperties].sort((a, b) => {
-                if (a[sortField] === null) return 1;
-                if (b[sortField] === null) return -1;
-                if (a[sortField] === null && b[sortField] === null) return 0;
-                return (
-                    a[sortField].toString().localeCompare(b[sortField].toString(), "en", {
-                        numeric: true,
-                    }) * (sortOrder === "asc" ? 1 : -1)
-                );
-            });
-            setFilteredProperties(sorted);
-        }
+        setSortField(sortField)
+        setSortOrder(sortOrder)
     };
 
 
@@ -267,7 +276,18 @@ border p-4 rounded-lg  border-gray-200 shadow-lg">
 
                             {
                                 (filteredProperties) &&
-                                filteredProperties.map((property, key) =>
+                               filteredProperties.reduce((acc, cur) => {
+                                    const existingItem = acc.find(item => cur.property_id === item.property_id);
+                                    if(existingItem) {
+                                       existingItem.count++;
+                                    }
+                                    else {
+                                       acc.push({...cur, count: 1});    
+                                    }
+                                    return acc;
+                                 }, [])
+                                 
+                                .map((property, key) =>
                                     <PropertyCard
                                         property={property} key={key} />
                                 )
