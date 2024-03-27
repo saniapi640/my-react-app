@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import dayjs from "dayjs"
 function MultiCheckBoxFilter(props) {
 
-  const [showToggle, setShowToggle] = useState(true)
-  
+const [showToggle, setShowToggle] = useState(true)
+
 
   return (
     <div>
@@ -64,7 +65,93 @@ function MultiCheckBoxFilter(props) {
 
                       className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
                     <label className="ml-3 text-sm text-gray-600 capitalize" htmlFor={option}>
-                      {option}
+                      <span className='font-medium'>{option}</span>
+                    {
+                      (props.showPriority === '1') && 
+                      <div className='inline-block ml-2 px-2'>
+
+
+
+ 
+                      <span class=" inline-block bg-lime-600 text-white text-center text-xs font-medium mx-1 p-2 cursor-pointer" title='Very High'>{
+                      (props.slug.includes('service_date')) ? 
+                      props.allitems.filter((item) =>
+                       item.priority.toLowerCase().includes('very high') &&
+                       dayjs(item.service_date).format("MMM DD, YYYY").includes(option)
+                          ).length   
+
+                          :
+                          props.allitems.filter((item) =>
+                       item.priority.toLowerCase().includes('very high') &&
+                       item.area.toLowerCase().includes(option.toLowerCase())
+                          ).length   
+
+                      }
+                      
+                      
+                      
+                      
+                      </span>
+                      <span class=" inline-block bg-lime-400 text-white text-center text-xs font-medium mx-1 p-2 cursor-pointer" title='High'>
+                        {
+                          props.slug.includes('service_date') ?
+                            props.allitems.filter((item) =>
+                            item.priority.toLowerCase().includes('high') &&
+                            dayjs(item.service_date).format("MMM DD, YYYY").includes(option)
+                               ).length
+
+                               : 
+                               props.allitems.filter((item) =>
+                               item.priority.toLowerCase().includes('high') &&
+                               item.area.toLowerCase().includes(option.toLowerCase())
+                                  ).length   
+                        }
+                      </span>
+                      <span class=" inline-block bg-yellow-500 text-white text-center text-xs font-medium mx-1 p-2 cursor-pointer" title='Medium'>
+                      {
+                        props.slug.includes('service_date') ?
+                            props.allitems.filter((item) =>
+                            item.priority.toLowerCase().includes('medium') &&
+                            dayjs(item.service_date).format("MMM DD, YYYY").includes(option)
+                               ).length
+                               :
+                               props.allitems.filter((item) =>
+                               item.priority.toLowerCase().includes('medium') &&
+                               item.area.toLowerCase().includes(option.toLowerCase())
+                                  ).length   
+                        }
+                      </span>
+                      <span class=" inline-block bg-orange-400 text-white text-center text-xs font-medium mx-1 p-2 cursor-pointer" title='Low'>
+                      {
+                        props.slug.includes('service_date') ?
+                            props.allitems.filter((item) =>
+                            item.priority.toLowerCase().includes('low') &&
+                            dayjs(item.service_date).format("MMM DD, YYYY").includes(option)
+                               ).length
+                               :
+                               props.allitems.filter((item) =>
+                               item.priority.toLowerCase().includes('low') &&
+                               item.area.toLowerCase().includes(option.toLowerCase())
+                                  ).length   
+                        }
+                      </span>
+                      <span class=" inline-block bg-red-400 text-white  text-center text-xs font-medium mx-1 p-2 cursor-pointer" title='Very Low'>{
+                        props.slug.includes('service_date') ?
+  props.allitems.filter((item) =>
+  item.priority.toLowerCase().includes('very low') &&
+  dayjs(item.service_date).format("MMM DD, YYYY").includes(option)
+     ).length
+     :
+     props.allitems.filter((item) =>
+     item.priority.toLowerCase().includes('very low') &&
+     item.area.toLowerCase().includes(option.toLowerCase())
+        ).length   
+}
+</span>
+                   
+                      </div>
+                    
+                    }
                     </label>
                   </div>
                 )

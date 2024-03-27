@@ -175,7 +175,7 @@ function Home() {
 
             {(properties) && properties.length !== 0 &&
                 <div className="w-full flex flex-col sm:flex-row gap-4">
-                    <div className="lg:w-2/12 md:w-4/12 w-full bg-white
+                    <div className="lg:w-3/12 md:w-4/12 w-full bg-white
                       border p-4 rounded-lg  border-gray-200 shadow-lg">
 
                         <div>
@@ -189,8 +189,11 @@ function Home() {
                                         .map((item) => item.service_date)
                                         .filter((value, index, self) => self.indexOf(value) === index)
                                 }
+                                    allitems={properties}
                                     selected={selectedDates}
+                                    showPriority = "1"
                                     title="Recommended Dates"
+                                    slug="service_date"
                                     onFilter={(selectedDates) => {
                                         setSelectedDates(selectedDates);
                                     }}
@@ -205,6 +208,9 @@ function Home() {
                                         .map((item) => item.area)
                                         .filter((value, index, self) => self.indexOf(value) === index)
                                 }
+                                allitems={properties}
+                                slug="area"
+                                showPriority = "1"
                                     selected={selectedAreas}
                                     title="Area"
                                     onFilter={(selectedAreas) => {
@@ -220,6 +226,9 @@ function Home() {
                                         .map((item) => item.priority)
                                         .filter((value, index, self) => self.indexOf(value) === index)
                                 }
+                                allitems={properties}
+                                showPriority = "0"
+                                slug="priority"
                                     selected={selectedPriorities}
                                     title="Priority"
                                     onFilter={(selectedPriorities) => {
@@ -235,6 +244,9 @@ function Home() {
                                         .map((item) => item.behaviour)
                                         .filter((value, index, self) => self.indexOf(value) === index)
                                 }
+                                allitems={properties}
+                                showPriority = "0"
+                                slug="behaviour"
                                     selected={selectedBehaviours}
                                     title="Behaviour"
                                     onFilter={(selectedBehaviours) => {
@@ -251,6 +263,9 @@ function Home() {
                                 .map((item) => item.service_duration)
                                         .filter((value, index, self) => self.indexOf(value) === index)
                                 }
+                                allitems={properties}
+                                showPriority = "0"
+                                slug="service_duration"
                                     selected={selectedDurations}
                                     title="Duration"
                                     onFilter={(selectedDurations) => {
@@ -267,7 +282,7 @@ function Home() {
 
                     </div>
 
-                    <div className="lg:w-10/12 md:w-8/12 w-full  bg-white
+                    <div className="lg:w-9/12 md:w-8/12 w-full  bg-white
 border p-4 rounded-lg  border-gray-200 shadow-lg">
 
                         <div className="table  min-w-full">
