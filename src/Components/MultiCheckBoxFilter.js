@@ -76,13 +76,13 @@ const [showToggle, setShowToggle] = useState(true)
                       <span class=" inline-block bg-lime-600 text-white text-center text-xs font-medium mx-1 p-2 cursor-pointer" title='Very High'>{
                       (props.slug.includes('service_date')) ? 
                       props.allitems.filter((item) =>
-                       item.priority.toLowerCase().includes('very high') &&
+                      item.priority.toLowerCase() === 'very high' &&
                        dayjs(item.service_date).format("MMM DD, YYYY").includes(option)
                           ).length   
 
                           :
                           props.allitems.filter((item) =>
-                       item.priority.toLowerCase().includes('very high') &&
+                       item.priority.toLowerCase() === 'very high' &&
                        item.area.toLowerCase().includes(option.toLowerCase())
                           ).length   
 
@@ -96,13 +96,13 @@ const [showToggle, setShowToggle] = useState(true)
                         {
                           props.slug.includes('service_date') ?
                             props.allitems.filter((item) =>
-                            item.priority.toLowerCase().includes('high') &&
+                            item.priority.toLowerCase() === 'high' &&
                             dayjs(item.service_date).format("MMM DD, YYYY").includes(option)
                                ).length
 
                                : 
                                props.allitems.filter((item) =>
-                               item.priority.toLowerCase().includes('high') &&
+                               item.priority.toLowerCase() === 'high' &&
                                item.area.toLowerCase().includes(option.toLowerCase())
                                   ).length   
                         }
@@ -111,12 +111,12 @@ const [showToggle, setShowToggle] = useState(true)
                       {
                         props.slug.includes('service_date') ?
                             props.allitems.filter((item) =>
-                            item.priority.toLowerCase().includes('medium') &&
+                            item.priority.toLowerCase() === 'medium' &&
                             dayjs(item.service_date).format("MMM DD, YYYY").includes(option)
                                ).length
                                :
                                props.allitems.filter((item) =>
-                               item.priority.toLowerCase().includes('medium') &&
+                               item.priority.toLowerCase() === 'medium' &&
                                item.area.toLowerCase().includes(option.toLowerCase())
                                   ).length   
                         }
@@ -125,12 +125,12 @@ const [showToggle, setShowToggle] = useState(true)
                       {
                         props.slug.includes('service_date') ?
                             props.allitems.filter((item) =>
-                            item.priority.toLowerCase().includes('low') &&
+                            item.priority.toLowerCase() === 'low' &&
                             dayjs(item.service_date).format("MMM DD, YYYY").includes(option)
                                ).length
                                :
                                props.allitems.filter((item) =>
-                               item.priority.toLowerCase().includes('low') &&
+                               item.priority.toLowerCase() === 'low' &&
                                item.area.toLowerCase().includes(option.toLowerCase())
                                   ).length   
                         }
